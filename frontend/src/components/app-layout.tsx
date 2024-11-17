@@ -7,7 +7,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
       <div className='w-52'>
         <SideBar />
       </div>
-      <div className='flex-grow'>{children}</div>
+      <div className='flex-grow p-5'>{children}</div>
     </div>
   );
 };
