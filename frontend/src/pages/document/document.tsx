@@ -6,6 +6,7 @@ import rehypeRaw from "rehype-raw";
 import { useState } from "react";
 import { Document as DocumentType } from "../../types";
 import useSaveDocument from "./api/save-document";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 
 const Document = () => {
   const { id } = useParams();
@@ -80,7 +81,26 @@ const Document = () => {
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[rehypeRaw]}
             className='grow'
-          />{" "}
+            components={{
+              code(props) {
+                const { children, className, node, ...rest } = props;
+                const match = /language-(\w+)/.exec(className || "");
+                return match ? (
+                  <SyntaxHighlighter
+                    {...rest}
+                    PreTag='div'
+                    children={String(children).replace(/\n$/, "")}
+                    language={match[1]}
+                    className='bg-gray-500'
+                  />
+                ) : (
+                  <code {...rest} className={className}>
+                    {children}
+                  </code>
+                );
+              },
+            }}
+          />
         </div>
       </div>
     </div>
