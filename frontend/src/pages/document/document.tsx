@@ -47,7 +47,12 @@ const Document = () => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-        <button onClick={onSaveDocument}>Save</button>
+        <button
+          className='w-fit text-sm p-1 px-3 bg-blue-600 text-white rounded'
+          onClick={onSaveDocument}
+        >
+          Save
+        </button>
       </header>
       <section className='flex gap-2'>
         <textarea
