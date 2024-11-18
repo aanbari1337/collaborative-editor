@@ -37,7 +37,7 @@ public class DocumentController {
 
     @PostMapping
     public Document createDocument(@RequestBody Document document){
-        Document newDocument = new Document(document.getContent(), LocalDateTime.now());
+        Document newDocument = new Document(document.getTitle(), document.getContent(), LocalDateTime.now());
         return documentRepository.save(newDocument);
     }
 }
