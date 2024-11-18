@@ -25,7 +25,8 @@ public class Document {
     public Document() {
     }
 
-    public Document( String content, LocalDateTime createdAt) {
+    public Document( String title, String content, LocalDateTime createdAt) {
+        this.title = title;
         this.content = content;
         this.createdAt = createdAt;
     }
