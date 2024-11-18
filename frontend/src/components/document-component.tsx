@@ -9,7 +9,7 @@ interface Props {
 const DocumentComponent = ({ id, title, createdAt }: Props) => {
   return (
     <Link to={`/documents/${id}`}>
-      <div className='font-fira p-2 border-b border-b-gray-300 cursor-pointer'>
+      <div className='font-fira p-2 border-b border-b-gray-200 cursor-pointer'>
         <h3 className='text-base font-semibold'>{title}</h3>
         <span className='text-xs text-gray-500'>{createdAt}</span>
       </div>

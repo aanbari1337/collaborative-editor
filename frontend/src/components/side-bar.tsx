@@ -8,8 +8,8 @@ import { Link } from "react-router-dom";
 const SideBar = () => {
   const { data } = useGetDocuments();
   return (
-    <div className='h-full flex flex-col justify-start  border-r border-r-gray-300 shadow'>
-      <header className='p-2 '>
+    <div className='h-full flex flex-col justify-start gap-5  border-r border-r-gray-300 shadow'>
+      <header className='p-2'>
         <Link
           to={"/documents/new"}
           className='w-fit text-sm p-1 px-2 bg-blue-600 text-white rounded'
@@ -17,14 +17,16 @@ const SideBar = () => {
           New Document
         </Link>
       </header>
-      {data?.map((document: Document) => (
-        <DocumentComponent
-          key={document.id}
-          id={document.id}
-          title={document.title}
-          createdAt={moment(document.createdAt).format("ll")}
-        />
-      ))}
+      <div className='flex flex-col flex-grow'>
+        {data?.map((document: Document) => (
+          <DocumentComponent
+            key={document.id}
+            id={document.id}
+            title={document.title}
+            createdAt={moment(document.createdAt).format("ll")}
+          />
+        ))}
+      </div>
     </div>
   );
 };

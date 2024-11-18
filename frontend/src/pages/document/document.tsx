@@ -40,34 +40,49 @@ const Document = () => {
     });
   };
   return (
-    <div className='flex flex-col gap-5'>
-      <header className='flex justify-between'>
-        <input
-          type='text'
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
+    <div className='font-fira flex gap-5 divide-x h-full'>
+      <div className='flex flex-col flex-grow gap-5'>
+        <header className='flex justify-between'>
+          <label htmlFor='title' className='flex flex-col gap-1 text-sm'>
+            Title:
+            <input
+              name='title'
+              type='text'
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className='block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6 focus-visible:outline-none'
+            />
+          </label>
+        </header>
+        <label
+          htmlFor='content'
+          className='flex flex-col flex-grow gap-1 text-sm'
+        >
+          Description:
+          <textarea
+            className='block w-full h-full resize-none rounded-md border-0 py-1.5 px-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6 focus-visible:outline-none'
+            onChange={(e) => setContent(e.target.value)}
+            value={content}
+          />
+        </label>
         <button
-          className='w-fit text-sm p-1 px-3 bg-blue-600 text-white rounded'
+          className='ml-auto w-fit text-sm p-1 px-3 bg-blue-600 text-white rounded'
           onClick={onSaveDocument}
         >
           Save
         </button>
-      </header>
-      <section className='flex gap-2'>
-        <textarea
-          className='grow border rounded-md border-gray-400'
-          rows={6}
-          onChange={(e) => setContent(e.target.value)}
-          value={content}
-        />
-        <Markdown
-          children={content}
-          remarkPlugins={[remarkGfm]}
-          rehypePlugins={[rehypeRaw]}
-          className='grow'
-        />{" "}
-      </section>
+      </div>
+      <div className='flex flex-col flex-grow gap-5 pl-5'>
+        <h3 className='font-bold'>Preview</h3>
+        <div className='flex-grow bg-gray-100 p-2 rounded-md'>
+          <Markdown
+            children={content}
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[rehypeRaw]}
+            className='grow'
+          />{" "}
+        </div>
+      </div>
     </div>
   );
 };
