@@ -9,6 +9,7 @@ import useSaveDocument from "./api/save-document";
 
 const Document = () => {
   const { id } = useParams();
+
   if (!id) return <div>Not found</div>;
   const [content, setContent] = useState<string>("");
   const [title, setTitle] = useState<string>("");
