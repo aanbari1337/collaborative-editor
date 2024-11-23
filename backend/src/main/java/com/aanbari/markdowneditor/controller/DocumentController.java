@@ -6,12 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.aanbari.markdowneditor.model.Document;
 import com.aanbari.markdowneditor.repository.DocumentRepository;
@@ -39,5 +34,16 @@ public class DocumentController {
     public Document createDocument(@RequestBody Document document){
         Document newDocument = new Document(document.getTitle(), document.getContent(), LocalDateTime.now());
         return documentRepository.save(newDocument);
+    }
+
+    @PutMapping("/document/{id}")
+    public Document updateDocument(@RequestBody Document newDocument, @PathVariable int id){
+        return documentRepository.findById(id).map(document -> {
+            document.setTitle(newDocument.getTitle());
+            document.setContent(newDocument.getContent());
+            return documentRepository.save(document);
+        }).orElseGet(() ->
+            documentRepository.save(newDocument)
+        );
     }
 }
