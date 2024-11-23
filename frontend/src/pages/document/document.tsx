@@ -3,18 +3,20 @@ import useGetDocumentDetails from "./api/get-document-details";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Document as DocumentType } from "../../types";
 import useSaveDocument from "./api/save-document";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import useUpdateDocument from "./api/update-document";
 
 const Document = () => {
   const { id } = useParams();
-
-  if (!id) return <div>Not found</div>;
   const [content, setContent] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const { mutate: saveDocument } = useSaveDocument();
+  const { mutate: updateDocument } = useUpdateDocument({
+    id: parseInt(id as string),
+  });
   const { isLoading, error } = useGetDocumentDetails(
     {
       id,
@@ -28,6 +30,14 @@ const Document = () => {
     }
   );
 
+  useEffect(() => {
+    if (id === "new") {
+      setTitle("");
+      setContent("");
+    }
+  }, [id]);
+
+  if (!id) return <div>Not found</div>;
   if (isLoading) return <div>loading...</div>;
   if (error) {
     console.log(error);
@@ -35,10 +45,16 @@ const Document = () => {
   }
 
   const onSaveDocument = () => {
-    saveDocument({
-      title,
-      content,
-    });
+    if (id === "new")
+      saveDocument({
+        title,
+        content,
+      });
+    else
+      updateDocument({
+        title,
+        content,
+      });
   };
   return (
     <div className='font-fira flex gap-5 divide-x h-full'>

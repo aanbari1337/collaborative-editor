@@ -6,7 +6,10 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 
 const SideBar = () => {
-  const { data } = useGetDocuments();
+  const { data, error } = useGetDocuments();
+
+  console.log(data, error);
+  if (error) return <div>Something went wrong! try later</div>;
   return (
     <div className='h-full flex flex-col justify-start gap-5  border-r border-r-gray-300 shadow'>
       <header className='p-2'>
