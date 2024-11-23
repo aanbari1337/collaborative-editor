@@ -46,4 +46,9 @@ public class DocumentController {
             documentRepository.save(newDocument)
         );
     }
+
+    @DeleteMapping("/document/{id}")
+    public void deleteDocument(@PathVariable int id){
+        documentRepository.deleteById(id);
+    }
 }
