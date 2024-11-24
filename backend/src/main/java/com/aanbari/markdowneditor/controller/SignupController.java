@@ -22,7 +22,7 @@ public class SignupController {
     public String signup(@RequestBody User user) {
 
         if (userRepository.findUserByEmail(user.getEmail()) != null) {
-            throw new IllegalArgumentException("User already exist! Try to login");
+            throw new IllegalArgumentException("User already exist! Try to login"); // TODO: handle the exception
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
