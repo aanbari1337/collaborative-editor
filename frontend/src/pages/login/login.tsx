@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import useLogin from "./api/login";
 import { ROUTES } from "../../routes/constants";
 import { LoginFormValues } from "../../types";
+import { TOKEN } from "../../helpers/constants";
 
 const Login = () => {
   const { control, handleSubmit } = useForm<LoginFormValues>({
@@ -14,7 +15,7 @@ const Login = () => {
   });
   const { mutate: login, isLoading } = useLogin({
     onSuccess: (data) => {
-      localStorage.setItem("token", data.data);
+      localStorage.setItem(TOKEN, data.data);
       return (window.location.href = ROUTES.home);
     },
   });
