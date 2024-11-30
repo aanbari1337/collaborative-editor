@@ -1,5 +1,6 @@
 package com.aanbari.markdowneditor.security;
 
+import com.aanbari.markdowneditor.config.WebConfig;
 import com.aanbari.markdowneditor.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,19 +14,22 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 public class SecurityConfig {
 
     private final JwtRequestFilter jwtRequestFilter;
+    private final CorsConfigurationSource corsConfigurationSource;
 
-    public SecurityConfig(JwtRequestFilter jwtRequestFilter) {
+    public SecurityConfig(JwtRequestFilter jwtRequestFilter, CorsConfigurationSource corsConfigurationSource) {
         this.jwtRequestFilter = jwtRequestFilter;
+        this.corsConfigurationSource = corsConfigurationSource;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.cors().configurationSource(corsConfigurationSource).and().csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/auth/login","api/auth/signup" ).permitAll() // Public endpoint
                 .anyRequest().authenticated()
