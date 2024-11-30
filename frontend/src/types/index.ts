@@ -4,3 +4,15 @@ export interface Document {
   content: string;
   createdAt: string;
 }
+
+export interface LoginFormValues {
+  email: string;
+  password: string;
+}
+
+export interface SignupFormValues {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}

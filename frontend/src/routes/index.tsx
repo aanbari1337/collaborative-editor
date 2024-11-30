@@ -10,6 +10,7 @@ import Login from "@/pages/login/login";
 import Signup from "@/pages/signup/signup";
 import AppLayout from "@/components/app-layout";
 import { isAuthenticated } from "./helpers";
+import { ROUTES } from "./constants";
 
 const ProtectedRoute = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
   return isAuthenticated ? (
@@ -17,29 +18,29 @@ const ProtectedRoute = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
       <Outlet />
     </AppLayout>
   ) : (
-    <Navigate to='/login' />
+    <Navigate to={ROUTES.login} />
   );
 };
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: ROUTES.home,
     element: <ProtectedRoute isAuthenticated={await isAuthenticated()} />,
     children: [
-      { path: "/", element: <Home /> },
-      { path: "/document/:id", element: <Document /> },
+      { path: ROUTES.home, element: <Home /> },
+      { path: ROUTES.document(), element: <Document /> },
     ],
   },
   {
-    path: "/login",
+    path: ROUTES.login,
     element: <Login />,
   },
   {
-    path: "/signup",
+    path: ROUTES.signup,
     element: <Signup />,
   },
   {
-    path: "/*",
+    path: ROUTES.not_found,
     element: <h3>Not Found!</h3>,
   },
 ]);

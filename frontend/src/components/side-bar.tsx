@@ -4,6 +4,7 @@ import useGetDocuments from "../api/get-documents";
 import { Document } from "../types";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import { ROUTES } from "../routes/constants";
 
 const SideBar = () => {
   const { data, error } = useGetDocuments();
@@ -13,7 +14,7 @@ const SideBar = () => {
     <div className='h-full flex flex-col justify-start gap-5  border-r border-r-gray-300 shadow'>
       <header className='p-2'>
         <Link
-          to={"/documents/new"}
+          to={ROUTES.document("new")}
           className='w-fit text-sm p-1 px-2 bg-blue-600 text-white rounded'
         >
           New Document

@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import TrashIcon from "@/assets/icons/trash-icon.svg?react";
 import useDeleteDocument from "@/pages/document/api/delete-document";
+import { ROUTES } from "../routes/constants";
 
 interface Props {
   id: number;
@@ -17,7 +18,7 @@ const DocumentComponent = ({ id, title, createdAt }: Props) => {
   };
   return (
     <Link
-      to={`/documents/${id}`}
+      to={ROUTES.document(String(id))}
       className='flex justify-between items-center p-2 border-b border-b-gray-200 font-fira '
     >
       <div className='flex flex-col'>

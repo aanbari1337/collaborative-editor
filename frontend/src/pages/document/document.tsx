@@ -8,6 +8,7 @@ import { Document as DocumentType } from "../../types";
 import useSaveDocument from "./api/save-document";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import useUpdateDocument from "./api/update-document";
+import Input from "../../components/ui/input";
 
 const Document = () => {
   const { id } = useParams();
@@ -62,12 +63,13 @@ const Document = () => {
         <header className='flex justify-between'>
           <label htmlFor='title' className='flex flex-col gap-1 text-sm'>
             Title:
-            <input
+            <Input
               name='title'
               type='text'
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className='block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6 focus-visible:outline-none'
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setTitle(e.target.value)
+              }
             />
           </label>
         </header>
@@ -78,7 +80,9 @@ const Document = () => {
           Description:
           <textarea
             className='block w-full h-full resize-none rounded-md border-0 py-1.5 px-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6 focus-visible:outline-none'
-            onChange={(e) => setContent(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+              setContent(e.target.value)
+            }
             value={content}
           />
         </label>
