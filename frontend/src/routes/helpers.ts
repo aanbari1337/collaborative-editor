@@ -1,7 +1,7 @@
-import { TOKEN } from "../helpers/constants";
+import { USER } from "../helpers/constants";
 
 export const isAuthenticated = async () => {
-  const token = localStorage.getItem(TOKEN);
+  const token = localStorage.getItem(USER);
 
   return !!token;
 };

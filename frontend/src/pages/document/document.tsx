@@ -4,13 +4,20 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import { useEffect, useState } from "react";
-import { Document as DocumentType } from "../../types";
+import { connectedUser, Document as DocumentType } from "../../types";
 import useSaveDocument from "./api/save-document";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import useUpdateDocument from "./api/update-document";
 import Input from "../../components/ui/input";
+import {
+  connectSocket,
+  disconnectSocket,
+  sendMessage,
+} from "../../api/socket-client";
+import { USER } from "../../helpers/constants";
 
 const Document = () => {
+  const user: connectedUser = JSON.parse(localStorage.getItem(USER) || "");
   const { id } = useParams();
   const [content, setContent] = useState<string>("");
   const [title, setTitle] = useState<string>("");
@@ -36,6 +43,16 @@ const Document = () => {
       setTitle("");
       setContent("");
     }
+    connectSocket((data) => {
+      if (user.id !== data.sender) {
+        setTitle(data.title);
+        setContent(data.content);
+      }
+    });
+
+    return () => {
+      disconnectSocket();
+    };
   }, [id]);
 
   if (!id) return <div>Not found</div>;
@@ -45,6 +62,19 @@ const Document = () => {
     return;
   }
 
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
+
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const message = {
+      sender: user.id,
+      title: title,
+      content: e.target.value,
+    };
+    setContent(e.target.value);
+    sendMessage(message);
+  };
   const onSaveDocument = () => {
     if (id === "new")
       saveDocument({
@@ -57,6 +87,7 @@ const Document = () => {
         content,
       });
   };
+
   return (
     <div className='font-fira flex gap-5 divide-x h-full'>
       <div className='flex flex-col flex-grow gap-5'>
@@ -67,9 +98,7 @@ const Document = () => {
               name='title'
               type='text'
               value={title}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setTitle(e.target.value)
-              }
+              onChange={handleTitleChange}
             />
           </label>
         </header>
@@ -80,9 +109,7 @@ const Document = () => {
           Description:
           <textarea
             className='block w-full h-full resize-none rounded-md border-0 py-1.5 px-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6 focus-visible:outline-none'
-            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-              setContent(e.target.value)
-            }
+            onChange={handleContentChange}
             value={content}
           />
         </label>

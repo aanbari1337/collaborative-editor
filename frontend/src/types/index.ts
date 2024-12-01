@@ -16,3 +16,9 @@ export interface SignupFormValues {
   email: string;
   password: string;
 }
+
+export interface connectedUser {
+  id: number;
+  email: string;
+  token: string;
+}

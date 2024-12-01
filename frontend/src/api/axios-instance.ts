@@ -1,5 +1,5 @@
 import axios from "axios";
-import { TOKEN } from "../helpers/constants";
+import { USER } from "../helpers/constants";
 import { ROUTES } from "../routes/constants";
 
 const instance = axios.create({
@@ -7,9 +7,8 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use((config) => {
-  const token = localStorage.getItem(TOKEN);
-  if (token)
-    config.headers.Authorization = `Bearer ${localStorage.getItem(TOKEN)}`;
+  const user = localStorage.getItem(USER);
+  if (user) config.headers.Authorization = `Bearer ${JSON.parse(user).token}`;
   return config;
 });
 instance.interceptors.response.use(
@@ -18,7 +17,7 @@ instance.interceptors.response.use(
   },
   (error) => {
     if (error.status === 403) {
-      localStorage.removeItem(TOKEN);
+      localStorage.removeItem(USER);
       window.location.href = ROUTES.login;
     }
     return Promise.reject(error);
