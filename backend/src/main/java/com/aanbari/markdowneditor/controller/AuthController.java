@@ -4,6 +4,8 @@ import com.aanbari.markdowneditor.model.AuthRequest;
 import com.aanbari.markdowneditor.model.User;
 import com.aanbari.markdowneditor.repository.UserRepository;
 import com.aanbari.markdowneditor.security.JwtUtil;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -45,15 +47,25 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody AuthRequest authRequest){
+    public LoginResponse login(@RequestBody AuthRequest authRequest){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
         );
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        return jwtUtil.generateToken(userDetails.getUsername());
+        String token = jwtUtil.generateToken(userDetails.getUsername());
+        User user = userRepository.findUserByEmail(userDetails.getUsername());
+        LoginResponse loginResponse = new LoginResponse(token, user.getId(),user.getEmail());
+        return loginResponse;
     }
 
 
+    @Getter
+    @AllArgsConstructor
+    class LoginResponse{
+        private String token;
+        private Long id;
+        private String email;
+    }
 
 }

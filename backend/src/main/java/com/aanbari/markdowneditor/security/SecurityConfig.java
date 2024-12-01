@@ -31,7 +31,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors().configurationSource(corsConfigurationSource).and().csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/auth/login","api/auth/signup" ).permitAll() // Public endpoint
+                .requestMatchers("/api/auth/login","api/auth/signup", "/ws/**" ).permitAll() // Public endpoint
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
